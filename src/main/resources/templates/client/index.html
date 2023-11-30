@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>Shop Homepage</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
+    <!-- Bootstrap icons-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css"
+          rel="stylesheet"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet"/>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+    <style>
+        /*div.inline {*/
+        /*    color: black;*/
+        /*    float: none;*/
+        /*    padding: 5px 5px;*/
+        /*    display: inline-block;*/
+        /*}*/
+
+        div.inline a.active {
+            background-color: #b6d4fe;
+            border: 1px solid darkred;
+        }
+        .inline {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .inline a.active {
+            background-color: #bfe2e9;
+            border: 1px solid darkred;
+        }
+
+        .inline a {
+            padding: 5px 10px;
+            margin: 0 5px;
+            border: 1px solid black;
+            text-decoration: none;
+            color: #000;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Shop in style</h1>
+            <p class="lead fw-normal text-white-50 mb-0">With this shop homepage template</p>
+        </div>
+    </div>
+</header>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+        <form class="ms-auto d-flex" th:action="@{/cart/view-cart}">
+            <button class="btn btn-outline-dark" type="submit">
+                <i class="bi-cart-fill me-1"></i>
+                My Cart
+                <span class="badge bg-dark text-white ms-1 rounded-pill"
+                      th:text="${session.sizecartItemList!=null?session.sizecartItemList:0}"></span>
+            </button>
+        </form>
+    </div>
+</nav>
+
+<!-- Product Section -->
+<section class="py-5">
+    <div class="container px-4 px-lg-5">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5 justify-content-center">
+            <!-- Display 5 products per row -->
+            <div th:each="product, iStat : ${productPage.content}" class="col mb-5 col-lg-2">
+                <div class="card h-100">
+                    <img class="card-img-top" th:src="${product.productImageList[0].path}"
+                         th:alt="${product.productImageList[0].alternative}"/>
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <h5 class="fw-bolder" th:text="${product.name}"></h5>
+                            <div th:text="${'$'+'  '+product.productPrices[0].price}"></div>
+                        </div>
+                    </div>
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center">
+                            <a class="btn btn-outline-dark mt-auto"
+                               th:href="@{shopping/add2cart/{id}(id=${product.product_id})}">
+                                Add to cart
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="inline" th:if="${productPage.totalPages > 0}">
+        <div  th:each="pageNumber : ${pageNumbers}">
+            <a th:href="@{/shopping(size=${productPage.size}, page=${pageNumber})}" th:text="${pageNumber}"
+               th:class="${pageNumber==productPage.number + 1} ? active"></a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Biểu đồ Thống kê</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        form div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            margin: 0 10px;
+        }
+
+        select, input[type="submit"] {
+            padding: 8px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        canvas {
+            max-width: 1500px;
+            width: 100%;
+            height: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        a.back-link {
+            font-weight: lighter;
+            font-size: 20px;
+            margin-left: 1400px;
+        }
+    </style>
+</head>
+<body>
+<h1>Biểu đồ Thống kê Sản phẩm</h1>
+<form action="/statistic/getstatistic" method="get">
+    <div>
+        <label for="month">Chọn tháng:</label>
+        <select id="month" name="month">
+            <option th:each="month: ${months}" th:value="${month}" th:text="${month}"></option>
+        </select>
+        <label for="year">Chọn năm:</label>
+        <select id="year" name="year">
+            <option th:each="year : ${years}" th:value="${year}" th:text="${year}"></option>
+        </select>
+        <input style="margin-left: 20px; background-color:rgb(54,170,0)" type="submit" value="Xem Thống Kê">
+    </div>
+</form>
+
+<h2 th:if="${found}" th:text="${'Thống kê doanh thu theo tháng '+monthselect+' của năm '+yearselect}"
+    style="text-align: center"></h2>
+
+<a th:href="@{/statistic/goback}" class="back-link">Trở về</a>
+<div style="max-width: 1500px; width: 100%; overflow-x: auto;">
+    <canvas th:if="${found}" id="myChart"></canvas>
+</div>
+
+<script th:if="${found}" th:inline="javascript">
+    var productNames = /*[[${productnamelist}]]*/ [];
+    var productTotal = /*[[${producttotallist}]]*/ [];
+    var productQuantity = /*[[${productquantitylist}]]*/ [];
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: productNames,
+            datasets: [
+                {
+                    label: 'Tổng',
+                    data: productTotal,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Số lượng',
+                    data: productQuantity,
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                tooltip: {
+                    titleFont: {
+                        size: 16
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 14
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

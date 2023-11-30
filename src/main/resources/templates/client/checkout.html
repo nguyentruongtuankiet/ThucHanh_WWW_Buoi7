@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Your custom CSS -->
+    <style>
+        /* Khung sản phẩm trong giỏ hàng */
+        .cart-item {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        /* Ảnh sản phẩm */
+        .cart-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 3px;
+        }
+
+        /* Số lượng sản phẩm */
+        .quantity-input {
+            width: 70px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="mb-4">My Cart</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Cart items -->
+            <div class="cart-items">
+                <!-- Cart item -->
+                <div class="cart-item mb-3">
+                    <div class="row align-items-center" th:each="cartItem: ${session.cartItemList}">
+                        <div class="col-md-2">
+                            <img th:src="@{${'/'+cartItem.getProduct().getProductImageList().get(0).getPath()}}"
+                                 alt="Product image" class="img-fluid">
+                        </div>
+                        <div class="col-md-6">
+                            <h5 th:text="${cartItem.getProduct().getName()}"></h5>
+                            <p><span th:text="${cartItem.getProduct().getManufacturer()}"></span></p>
+                            <p th:text="'Price: $' + ${cartItem.getProduct().getProductPrices().get(0).getPrice()}"></p>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="quantity d-flex align-items-center">
+                                <a th:href="@{/cart/minus/{id}(id=${cartItem.getProduct().getProduct_id()})}"
+                                   class="btn btn-sm btn-primary me-2">-</a>
+                                <input type="text" th:value="${cartItem.getAmount()}"
+                                       class="form-control quantity-input me-2">
+                                <a th:href="@{/cart/plus/{id}(id=${cartItem.getProduct().getProduct_id()})}"
+                                   class="btn btn-sm btn-primary">+</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+            <!-- Total -->
+            <div class="total bg-light p-3">
+                <h5>Total</h5>
+                <h3 class="fw-bold" th:text="${session.total}"></h3>
+                <button class="btn btn-primary btn-lg mt-3" th:text="'Checkout $:'+${session.total}">Checkout</button>
+            </div>
+            <!-- End Total -->
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<!-- Font Awesome JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+
+</body>
+</html>

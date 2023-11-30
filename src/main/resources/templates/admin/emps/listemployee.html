@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Danh sách nhân viên</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .table-container {
+            margin-top: 50px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f5f5f5;
+        }
+
+        th a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        th a:hover {
+            text-decoration: underline;
+        }
+
+        td a {
+            color: #333;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        td a:hover {
+            color: #007bff;
+        }
+
+        .back-button {
+            position: absolute;
+            margin-top: -15px;
+            margin-left: 320px;
+        }
+
+        .back-button a {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .back-button a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2 style="text-align: center; margin-bottom: 20px;">Danh Sách Các Nhân Viên</h2>
+<div class="back-button">
+    <a th:href="@{/employee/goback}">Quay lại</a>
+</div>
+<div class="container table-container">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Full Name</th>
+            <th>Day Of Birth</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th colspan="2"><a th:href="@{/employee/show-add-form}">Thêm nhân viên</a></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employeeList}">
+            <td th:text="${employee.getId()}"></td>
+            <td th:text="${employee.getFullname()}"></td>
+            <td th:text="${employee.getDob()}"></td>
+            <td th:text="${employee.getEmail()}"></td>
+            <td th:text="${employee.getAddress()}"></td>
+            <td th:text="${employee.getPhone()}"></td>
+            <td th:text="${employee.getStatus()}"></td>
+            <td style="color: firebrick !important;"><a th:href="@{/employee/delete/{id}(id=${employee.getId()})}">Xóa</a></td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

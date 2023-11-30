@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm sản phẩm mới</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <style>
+        /* Custom style for form */
+        body {
+            padding-top: 50px;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .form-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Style for submit button */
+        .form-container .btn-primary {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+<div class="form-container">
+    <h1>Thêm sản phẩm mới</h1>
+    <form th:action="@{/admin/products/add}" th:object="${product}" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}">
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" th:field="*{description}"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="unit" class="form-label">Unit</label>
+            <input type="text" class="form-control" id="unit" th:field="*{unit}">
+        </div>
+        <div class="mb-3">
+            <label for="inputManu" class="form-label">Manufacturer</label>
+            <input type="text" class="form-control" id="inputManu" th:field="*{manufacturer}">
+        </div>
+        <div class="mb-3">
+            <label for="selectStatus" class="form-label">Status</label>
+            <select class="form-select" id="selectStatus" th:field="*{status}">
+                <option th:each="st : ${productStatus}" th:value="${st}" th:text="${st}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+        </div>
+    </form>
+</div>
+</body>
+
+</html>

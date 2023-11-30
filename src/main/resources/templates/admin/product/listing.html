@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Danh sách sản phẩm</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 20px;
+        }
+
+        h4 {
+            margin-bottom: 20px;
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: contain;
+        }
+
+        .price,
+        .Manu {
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .cart-badge {
+            position: relative;
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        .cart-badge span {
+            position: absolute;
+            top: -45px;
+            right: 4px;
+            background-color: firebrick;
+            color: white;
+            border-radius: 50%;
+            padding: 6px;
+            font-size: 14px;
+        }
+
+        .inline {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .inline a.active {
+            background-color: #bfe2e9;
+            border: 1px solid darkred;
+        }
+
+        .inline a {
+            padding: 5px 10px;
+            margin: 0 5px;
+            border: 1px solid black;
+            text-decoration: none;
+            color: #000;
+            border-radius: 3px;
+        }
+
+        /* Additional Styles for Header */
+        .float-right {
+            margin-left: 10px;
+        }
+
+        .cart-badge {
+            margin-left: 10px;
+        }
+
+        .float-right img {
+            vertical-align: middle;
+        }
+
+        .mb-3 {
+            margin-bottom: 20px;
+        }
+
+        .row {
+            margin-left: -15px;
+            margin-right: -15px;
+        }
+
+        /* Adjust the Cart and Update buttons */
+        .float-right a {
+            margin-left: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <h4 class="card-header mb-3">Danh sách sản phẩm</h4>
+            <div style="margin-top: 3px" class="float-left">
+                <a style="font-size: 18px" class="btn btn-success btn-sm" th:href="@{/admin/products/show-add-form}">
+                    Thêm sản phẩm
+                </a>
+            </div>
+            <div class="float-right">
+                <a style="font-size: 15px" class="btn btn-primary btn-sm" th:href="@{/statistic/getstatisticmonthandyear}">
+                    Xem Thống Kê
+                </a>
+            </div>
+            <div class="float-right">
+                <a style="font-size: 15px" class="btn btn-primary btn-sm" th:href="@{/employee/listemployee}">
+                    Xem Danh Sách Nhân Viên
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Lặp qua danh sách sản phẩm và hiển thị từng sản phẩm trong 4 cột -->
+        <div class="col-lg-3 col-md-4 col-sm-6" th:each="product : ${productPage.content}">
+            <div class="card mb-4">
+                <img class="card-img-top" th:src="@{${'/'+product.getProductImageList().get(0).getPath()}}"
+                     alt="Card image cap">
+
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.name}"></h5>
+                    <h6 class="price" th:text="${'$' + product.getProductPrices().get(0).getPrice()}"></h6>
+                    <h6 class="Manu" th:text="${'$' + product.manufacturer + ' &nbsp;&nbsp; ' + product.unit}"></h6>
+                    <div class="btn-group">
+                        <a style="margin-left: 170px" th:href="@{/admin/products/delete/{id}(id=${product.product_id})}" class="btn btn-danger">Delete</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="inline" th:if="${productPage.totalPages > 0}">
+        <div th:each="pageNumber : ${#numbers.sequence(1, productPage.totalPages)}">
+            <a th:href="@{/admin/products(size=${productPage.size}, page=${pageNumber})}" th:text="${pageNumber}"
+               th:class="${pageNumber == productPage.number + 1} ? 'active'"></a>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
